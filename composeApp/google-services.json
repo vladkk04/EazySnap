@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268878988584",
+    "project_id": "eazysnap-ef96b",
+    "storage_bucket": "eazysnap-ef96b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268878988584:android:d5850bd937714deb6a3c1d",
+        "android_client_info": {
+          "package_name": "com.arkul.eazysnap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2X0RlwsOobYlqIXdGUrJGfOimGkV-l2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

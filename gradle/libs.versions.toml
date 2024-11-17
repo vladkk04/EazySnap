@@ -17,6 +17,8 @@ kotlin = "2.0.21"
 google-services = "4.4.2"
 firebase-auth = "2.1.0"
 core-splashScreen = "1.0.1"
+koin = "4.0.0"
+libphonenumber = "8.12.50"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -31,8 +33,23 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+
+#Splash Screen Android
+core-splashScreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashScreen" }
+google-libphonenumber = { group = "com.googlecode.libphonenumber", name = "libphonenumber", version.ref = "libphonenumber" }
+
+
+#Koin Common
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"}
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin"}
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin"}
+
+#Koin Android
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin"}
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin"}
+
+#Firebase Commom
 firebase-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebase-auth" }
-core-splashScreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashScreen"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

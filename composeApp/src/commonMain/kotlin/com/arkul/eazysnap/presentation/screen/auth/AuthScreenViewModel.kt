@@ -1,4 +1,6 @@
 package com.arkul.eazysnap.presentation.screen.auth
 
-class AuthScreenViewModel {
+import androidx.lifecycle.ViewModel
+
+class AuthScreenViewModel: ViewModel() {
 }

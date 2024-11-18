@@ -18,6 +18,7 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.unit.dp
+import com.arkul.eazysnap.data.CountryManager
 import com.arkul.eazysnap.domain.model.Country
 import com.arkul.eazysnap.presentation.screen.auth.components.PhoneNumberTextField
 import eazysnap.composeapp.generated.resources.Res
@@ -25,6 +26,7 @@ import eazysnap.composeapp.generated.resources.ic_ua
 
 @Composable
 fun AuthScreen(
+    countryManager: CountryManager,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -33,20 +35,7 @@ fun AuthScreen(
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
-        PhoneNumberTextField(
-            countries = arrayOf(
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua),
-                Country("Ukraine", "+380", Res.drawable.ic_ua)
-            ),
-        )
+        PhoneNumberTextField(countryManager.getCountries())
 
         Button(
             onClick = {

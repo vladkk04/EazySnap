@@ -89,6 +89,7 @@ fun PhoneNumberTextField(
     var value by remember { mutableStateOf("") }
     var barYPosition by remember { mutableStateOf(0) }
 
+
     ExposedDropdownMenuBox(
         expanded = false,
         onExpandedChange = {  },
@@ -184,7 +185,7 @@ fun ExposedDropdownMenuBoxScope.CountryDropdownMenu(
                 }
                 items(
                     count = countries.size,
-                    //key = { countries[it].name }
+                    key = { countries[it].name }
                 ) { index ->
                     val country = countries[index]
                     DropdownMenuItem(

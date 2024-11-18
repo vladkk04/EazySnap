@@ -82,7 +82,13 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+        create("profile") {
+            initWith(getByName("debug"))
+            isDebuggable = false
+            isProfileable = true
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

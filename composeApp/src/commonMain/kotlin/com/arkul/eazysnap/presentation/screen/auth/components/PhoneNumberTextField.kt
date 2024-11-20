@@ -7,8 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -18,6 +21,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,6 +39,7 @@ import androidx.compose.material.ExposedDropdownMenuBoxScope
 import androidx.compose.material.Icon
 import androidx.compose.material.MenuDefaults
 import androidx.compose.material.Shapes
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -85,10 +91,9 @@ fun PhoneNumberTextField(
     countries: Array<Country>,
     modifier: Modifier = Modifier
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
     var value by remember { mutableStateOf("") }
+    var isExpanded by remember { mutableStateOf(false) }
     var barYPosition by remember { mutableStateOf(0) }
-
 
     ExposedDropdownMenuBox(
         expanded = false,
@@ -103,6 +108,7 @@ fun PhoneNumberTextField(
             singleLine = true,
             leadingIcon = {
                 Row(
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(8.dp, 0.dp)
@@ -113,86 +119,56 @@ fun PhoneNumberTextField(
                 ) {
                     FlagIcon(Res.drawable.ic_ua)
                     Icon(
-                        Icons.Filled.ArrowDropDown,
+                        imageVector = Icons.Filled.ArrowDropDown,
                         contentDescription = "Trailing icon for exposed dropdown menu",
-                        Modifier.rotate(if (isExpanded) 180f else 0f),
-                        tint = Color.White
+                        tint = Color.White,
+                        modifier = Modifier.rotate(if (isExpanded) 180f else 0f)
                     )
                 }
             },
             label = { Text("Phone Number") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-            ),
             textStyle = TextStyle(fontSize = 16.sp),
             modifier = Modifier
                 .fillMaxWidth()
-                .border(0.5.dp, Color.White, RoundedCornerShape(8.dp))
         )
         CountryDropdownMenu(
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false },
+            onItemClick = {
+
+            },
             countries = countries,
-            offset = IntOffset(0, barYPosition)
+            modifier = Modifier.exposedDropdownSize()
         )
     }
 }
 
 @Composable
-private fun FlagIcon(
-    resource: DrawableResource,
-    contentDescription: String = "Flag",
-    modifier: Modifier = Modifier
-) {
-    Icon(
-        painterResource(resource),
-        contentDescription = contentDescription,
-        tint = Color.Unspecified,
-        modifier = modifier.clip(RoundedCornerShape(2.dp))
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
-@Composable
-fun ExposedDropdownMenuBoxScope.CountryDropdownMenu(
+fun CountryDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    offset: IntOffset = IntOffset.Zero,
+    onItemClick: (Country) -> Unit,
     countries: Array<Country>,
     modifier: Modifier = Modifier,
 ) {
     if(expanded) {
-        Popup(
-            onDismissRequest = onDismissRequest,
-            offset = offset.copy(y = offset.y + 10),
-            properties = PopupProperties(
-                focusable = true,
-                clippingEnabled = false
-            ),
+        Column(
+            modifier = modifier
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .height(200.dp)
-                    .exposedDropdownSize()
-            ) {
-                stickyHeader {
-                    SearchTextField()
-                    Divider(modifier = Modifier.fillMaxWidth())
-                }
+            SearchTextField()
+            Divider()
+            LazyColumn {
                 items(
                     count = countries.size,
                     key = { countries[it].name }
                 ) { index ->
                     val country = countries[index]
                     DropdownMenuItem(
-                        onClick = {}
+                        onClick = {
+                            onItemClick(country)
+                        }
                     ) {
                         FlagIcon(country.flag, country.name)
-                        Spacer(Modifier.width(12.dp))
                         Text(text = stringResource(Res.string.country_dial_codes, country.name, country.code))
                     }
                 }
@@ -210,46 +186,52 @@ private fun SearchTextField(
 
     textState.edit { onValueChange.invoke(this.originalText) }
 
-    val customTextSelectionColors = TextSelectionColors(
-        handleColor = Color.Transparent,
-        backgroundColor = LocalTextSelectionColors.current.backgroundColor
-    )
-
-    CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
-        BasicTextField(
-            state = textState,
-            lineLimits = TextFieldLineLimits.SingleLine,
-            decorator = { innerTextField ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .padding(MenuDefaults.DropdownMenuItemContentPadding)
-                        .fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (textState.text.isEmpty()) {
-                            Text(text = "Search for Country")
-                        }
-                        innerTextField()
+    BasicTextField(
+        state = textState,
+        lineLimits = TextFieldLineLimits.SingleLine,
+        decorator = { innerTextField ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .padding(MenuDefaults.DropdownMenuItemContentPadding)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                )
+                Spacer(Modifier.width(8.dp))
+                Box(modifier = Modifier.weight(1f)) {
+                    if (textState.text.isEmpty()) {
+                        Text(text = "Search for Country")
                     }
-                    Spacer(Modifier.width(8.dp))
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            textState.edit { this.replace(0, this.length, "") }
-                        }
-                    )
+                    innerTextField()
                 }
-            },
-            modifier = modifier
-                .background(Color.White),
-        )
-    }
+                Spacer(Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.clickable {
+                        textState.edit { this.replace(0, this.length, "") }
+                    }
+                )
+            }
+        },
+        modifier = modifier
+            .background(Color.White),
+    )
+}
+
+@Composable
+private fun FlagIcon(
+    resource: DrawableResource,
+    contentDescription: String = "Flag",
+    modifier: Modifier = Modifier
+) {
+    Icon(
+        painterResource(resource),
+        contentDescription = contentDescription,
+        tint = Color.Unspecified,
+        modifier = modifier.clip(RoundedCornerShape(2.dp))
+    )
 }

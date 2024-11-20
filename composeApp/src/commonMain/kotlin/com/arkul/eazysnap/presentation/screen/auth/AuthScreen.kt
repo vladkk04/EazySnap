@@ -33,7 +33,6 @@ fun AuthScreen(
         contentAlignment = BiasAlignment(0f, -0.2f),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 32.dp)
     ) {
         PhoneNumberTextField(countryManager.getCountries())
 

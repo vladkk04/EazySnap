@@ -30,19 +30,25 @@ fun AuthScreen(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        contentAlignment = BiasAlignment(0f, -0.2f),
+        contentAlignment = BiasAlignment(0f, -0.4f),
         modifier = Modifier
             .fillMaxSize()
     ) {
-        PhoneNumberTextField(countryManager.getCountries())
+        PhoneNumberTextField(
+            countryManager.getCountries(),
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth()
+        )
 
         Button(
             onClick = {
 
             },
             modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(32.dp)
                 .fillMaxWidth()
-                .align(BiasAlignment(0f, 0.95f))
         ) {
             Text("Continue")
         }

@@ -1,3 +1,4 @@
 <resources>
-    <string name="country_dial_codes">%1$s (%2$s)</string>
+    <string name="label_phone_number">Phone Number</string>"
+    <string name="country_dial_codes">%1$s (+%2$s)</string>
 </resources>

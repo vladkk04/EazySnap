@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.getResourceUri
 import org.jetbrains.compose.resources.painterResource
 import java.util.Locale
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class CountryManager(
     private val context: Context
 ) {
@@ -29,7 +30,7 @@ actual class CountryManager(
 
         val flagFallback = Res.drawable.ic_ua
 
-        return allRegions.sortedBy { it }.map { region ->
+        return allRegions.map { region ->
             val countryCode = instance.getCountryCodeForRegion(region)
             val countryName = Locale("", region).displayCountry
 
